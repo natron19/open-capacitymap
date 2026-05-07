@@ -1,0 +1,40 @@
+<%= link_to "← Back to projects", project_ideas_path, class: "text-muted small mb-4 d-block" %>
+
+<div class="d-flex justify-content-between align-items-start mb-3">
+  <h1 class="mb-0" style="color:var(--accent);"><%= @project_idea.name %></h1>
+  <div class="ms-3 flex-shrink-0">
+    <% if @project_idea.time_commitment.present? %>
+      <span class="badge bg-secondary d-block mb-1"><%= @project_idea.time_commitment %></span>
+    <% end %>
+    <% if @project_idea.impact_type.present? %>
+      <span class="badge bg-secondary d-block"><%= @project_idea.impact_type %></span>
+    <% end %>
+  </div>
+</div>
+
+<p class="lead mb-4"><%= @project_idea.description %></p>
+
+<% if @project_idea.gifts_used_list.any? %>
+  <p class="small fw-semibold mb-1">Gifts this draws on:</p>
+  <div class="d-flex flex-wrap gap-1 mb-4">
+    <% @project_idea.gifts_used_list.each do |gift| %>
+      <span class="chip-tag chip-tag--<%= gift["category"] %>"><%= gift["name"] %></span>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @project_idea.first_step.present? %>
+  <div class="first-step-alert p-3 rounded mb-4">
+    <strong class="small text-muted d-block mb-1">First step this week</strong>
+    <%= @project_idea.first_step %>
+  </div>
+<% end %>
+
+<%# Show raw response toggle — expanded by default on detail page %>
+<a class="btn btn-sm btn-outline-secondary mb-2"
+   data-bs-toggle="collapse" href="#raw-response" aria-expanded="true">
+  Show raw response
+</a>
+<div class="collapse show" id="raw-response">
+  <pre class="bg-dark p-3 rounded small text-muted mt-2" style="white-space:pre-wrap;"><%= @project_idea.gemini_raw.presence || "(no raw response stored)" %></pre>
+</div>

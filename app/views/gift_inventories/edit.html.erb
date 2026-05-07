@@ -1,0 +1,7 @@
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <h1 class="mb-1">Edit Your Gift Inventory</h1>
+    <p class="text-muted mb-4">Last updated <%= @inventory.updated_at.strftime("%B %d, %Y") %></p>
+    <%= render "form", gift_inventory: @inventory %>
+  </div>
+</div>

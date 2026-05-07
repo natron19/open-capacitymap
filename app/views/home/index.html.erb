@@ -1,0 +1,44 @@
+<div class="container py-5">
+  <div class="row align-items-center g-5">
+
+    <div class="col-lg-6">
+      <h1 class="display-5 fw-bold lh-sm mb-4">
+        <%= ENV.fetch("APP_TAGLINE", "Inventory your gifts. Get a list of meaningful projects where they are needed.") %>
+      </h1>
+      <p class="lead text-muted mb-2">Most volunteer tools start from a coordinator's task list and ask you to pick from it.</p>
+      <p class="lead text-muted mb-2"><%= ENV.fetch("APP_NAME", "CapacityMap Demo") %> inverts the model: start from the gifts <em>you</em> already have, and surface the projects only you could meaningfully run.</p>
+      <p class="lead text-muted mb-4">Fill in your inventory in under five minutes. Gemini returns 5–7 specific project ideas matched to your skills, interests, and availability.</p>
+
+      <% if signed_in? %>
+        <%= link_to "Go to Dashboard", dashboard_path,
+              class: "btn btn-lg fw-semibold",
+              style: "background:var(--accent);color:#000;" %>
+      <% else %>
+        <%= link_to "Get Started — it's free", sign_up_path,
+              class: "btn btn-lg fw-semibold me-3",
+              style: "background:var(--accent);color:#000;" %>
+        <%= link_to "Sign in", sign_in_path, class: "btn btn-lg btn-outline-secondary" %>
+      <% end %>
+    </div>
+
+    <div class="col-lg-6 d-flex justify-content-center">
+      <div style="width:100%;max-width:420px;height:320px;border-radius:1rem;background:#111;position:relative;overflow:hidden;">
+        <svg viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;opacity:0.6;">
+          <path d="M0 200 Q60 170 120 190 Q180 210 240 180 Q300 150 360 170 Q400 182 420 175 L420 320 L0 320 Z" fill="none" stroke="#2d3a1a" stroke-width="1.5"/>
+          <path d="M0 220 Q70 195 140 210 Q200 225 260 200 Q320 175 380 195 Q405 205 420 200 L420 320 L0 320 Z" fill="none" stroke="#2d3a1a" stroke-width="1.5"/>
+          <path d="M0 160 Q80 130 160 150 Q220 165 280 140 Q340 115 420 145 L420 0 L0 0 Z" fill="none" stroke="#2d3a1a" stroke-width="1.5"/>
+          <path d="M0 130 Q90 100 170 120 Q230 135 290 110 Q350 85 420 115 L420 0 L0 0 Z" fill="none" stroke="#2d3a1a" stroke-width="1.5"/>
+          <path d="M0 100 Q100 70 190 90 Q250 105 310 80 Q370 55 420 80 L420 0 L0 0 Z" fill="none" stroke="#2d3a1a" stroke-width="1.5"/>
+          <circle cx="95"  cy="185" r="5" fill="#a3e635" opacity="0.9"/>
+          <circle cx="210" cy="165" r="4" fill="#a3e635" opacity="0.8"/>
+          <circle cx="340" cy="155" r="6" fill="#a3e635" opacity="0.9"/>
+          <circle cx="155" cy="130" r="4" fill="#a3e635" opacity="0.7"/>
+          <circle cx="275" cy="110" r="5" fill="#a3e635" opacity="0.85"/>
+          <circle cx="60"  cy="120" r="3" fill="#a3e635" opacity="0.6"/>
+          <circle cx="390" cy="130" r="4" fill="#a3e635" opacity="0.75"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</div>
