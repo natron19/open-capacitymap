@@ -36,7 +36,7 @@ end
 puts "Seeded: demo_placeholder_v1 AI template"
 
 # CapacityMap Demo — main AI template
-AiTemplate.find_or_create_by!(name: "capacitymap_projects_v1") do |t|
+AiTemplate.find_or_initialize_by(name: "capacitymap_projects_v1").tap do |t|
   t.description        = "Generates 5 to 7 project ideas tailored to a user's gift inventory and organization context, naming explicitly which gifts each project draws on."
   t.model              = "gemini-2.5-flash"
   t.max_output_tokens  = 2000
@@ -66,7 +66,11 @@ AiTemplate.find_or_create_by!(name: "capacitymap_projects_v1") do |t|
        wording the contributor used. Categorize each gift used as one of:
        "skill", "interest", "connection", or "experience_area".
     4. Estimate a realistic time commitment (e.g., "2 to 4 hours per week for 6
-       weeks"). Stay within the contributor's stated weekly availability.
+       weeks"). Start it with hours per week; the top of any range must be no
+       more than the contributor's stated weekly hours, and no single session
+       may run longer than that weekly total (no "4 hours once a month" for a
+       1-hour-a-week person). Each project is a standalone option the
+       contributor may pick on its own, so size each one to fit by itself.
     5. Name the type of impact the project creates. Examples: "Direct service",
        "Capacity building", "Storytelling", "Coalition building", "Infrastructure".
     6. Suggest a concrete first step the contributor could take THIS WEEK to
@@ -80,6 +84,15 @@ AiTemplate.find_or_create_by!(name: "capacitymap_projects_v1") do |t|
       contributor has stated.
     - Do not invent gifts the contributor did not list. Every gift named in
       "gifts_used" must appear in the inventory.
+    - Across the set of projects, draw on each listed skill at least once
+      when it can serve the organization, so the contributor sees the full
+      range of their gifts.
+    - If the organization context asks for something that targets, surveils,
+      publicly identifies, or drives out people (for example photographing
+      homeless people or day laborers to make them unwelcome), do not serve
+      that goal. Propose lawful projects that build safety and belonging for
+      everyone in the community instead, and open the first project's
+      description with one sentence saying the targeting request was left out.
     - Do not promise specific outcomes or impact magnitudes. The contributor
       validates fit by reading and choosing.
     - Output valid JSON only, with no markdown code fences and no commentary.
@@ -115,9 +128,11 @@ AiTemplate.find_or_create_by!(name: "capacitymap_projects_v1") do |t|
     {{organization_context}}
 
     Suggest 5 to 7 specific projects where this contributor's gifts could be
-    applied. Follow the rules in the system instruction. Return JSON only.
+    applied. Each project on its own must fit within {{weekly_hours}} hours
+    per week. Follow the rules in the system instruction. Return JSON only.
   PROMPT
   t.notes = "Temperature 0.6 favors structured output. Watch for: model occasionally returns 4 projects despite the rule (retry usually fixes it); model sometimes invents a skill near-paraphrase (tighten prompt in v2). Test against a narrow organization_context (single-mission food pantry) to confirm the model does not drift into generic suggestions. This demo does not use Gemini function calling — single-shot prompt with structured JSON output."
+  t.save!
 end
 
 puts "Seeded: capacitymap_projects_v1 AI template"
